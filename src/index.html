@@ -19,85 +19,11 @@
       </nav>
       <div class="trello_root ">
         <div class="row align-items-start">
-          <!-- modal screen -->
-          <div class="modal fade" id="modalScreenAddTodo" data-bs-backdrop="static" data-bs-keyboard="false"
-            tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h1 class="modal-title fs-5" id="staticBackdropLabel">Adding a new todo</h1>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                  <form id="modalFormAddNewTodo">
-                    <div class="form-floating mb-3">
-                      <input id="setTodoTitle" type="text" class="form-control" placeholder="Enter the title Todo">
-                      <label for="floatingInput">Enter the title Todo</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                      <textarea id="setTodoDescription" class="form-control" placeholder="Description"
-                        style="height: 100px"></textarea>
-                      <label for="floatingTextarea2">Description</label>
-                    </div>
-                    <div class="modal-body__btn d-flex gap-2">
-                      <select class="form-select" id="setTodoUser">
-                        <option selected disabled>Select User</option>
-                        <option value="Denis">Denis</option>
-                        <option value="Hennry">Hennry</option>
-                      </select>
-                      <button id="btnCloseModalAddTodo" type="button" class="btn btn-secondary"
-                        data-bs-dismiss="modal">Close</button>
-                      <button id="btnAddNewTodo" type="submit" class="btn btn-primary"
-                        data-bs-dismiss="modal">Confirm</button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- edit modal screen -->
-          <div class="modal fade" id="modalScreenEditTodo" data-bs-backdrop="static" data-bs-keyboard="false"
-            tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h1 class="modal-title fs-5" id="modalScreenEditTodoLabel">Edit todo</h1>
-                  <button id="btnCloseHead" type="button" class="btn-close" data-bs-dismiss="modal"
-                    aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                  <form id="modalFormEditTodo">
-                    <div class="form-floating mb-3">
-                      <input id="editTodoTitle" type="text" class="form-control" placeholder="Enter the title Todo">
-                      <label for="floatingInput">Enter the title Todo</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                      <textarea id="editTodoDescription" class="form-control" placeholder="Description"
-                        style="height: 100px"></textarea>
-                      <label for="editFloatingTextarea">Description</label>
-                    </div>
-                    <div class="modal-body__btn d-flex gap-2">
-                      <select class="form-select" id="editTodoUser">
-                        <option selected disabled>Select User</option>
-                        <option value="Denis">Denis</option>
-                        <option value="Hennry">Hennry</option>
-                      </select>
-                      <button id="btnCloseModalEditTodo" type="button" class="btn btn-secondary"
-                        data-bs-dismiss="modal">Close</button>
-                      <button id="btnConfirmEdit" type="submit" class="btn btn-primary"
-                        data-bs-dismiss="modal">Confirm</button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- modal screen finish -->
-          <div id="todoActiveCol" class="col bg-light m-3 p-0 border border-danger border-2 rounded-5">
+          <div id="colTodo" class="col bg-light m-3 p-0 border border-danger border-2 rounded-5">
             <div
               class="col-title text-center border-bottom border-2 border-dark d-flex justify-content-between p-2 pe-4 ps-4">
               <div class="name-col">Todo</div>
-              <div id="colCounterActiveTodo" class="col-counter">0</div>
+              <div id="counterActiveTodo" class="col-counter">0</div>
             </div>
             <div id="activeTodoCardList" class="todo-card-list"></div>
             <div class="d-grid p-3">
@@ -105,19 +31,19 @@
                 data-bs-target="#modalScreenAddTodo">Add Todo</button>
             </div>
           </div>
-          <div id="todoInProgressCol" class="col bg-light m-3 p-0 border border-danger border-2 rounded-5">
+          <div id="colInProgress" class="col bg-light m-3 p-0 border border-danger border-2 rounded-5">
             <div
               class="col-title text-center border-bottom border-2 border-dark d-flex justify-content-between p-2 pe-4 ps-4 mb-4">
               <div class="name-col">In progress</div>
-              <div id="colCounterInProgress" class="col-counter">0</div>
+              <div id="counterInProgress" class="col-counter">0</div>
             </div>
             <div id="inProgressTodoCardList" class="todo-card-list"></div>
           </div>
-          <div id="todoDoneCol" class="col bg-light m-3 p-0 border border-danger border-2 rounded-5">
+          <div id="colDone" class="col bg-light m-3 p-0 border border-danger border-2 rounded-5">
             <div
               class="col-title text-center border-bottom border-2 border-dark d-flex justify-content-between p-2 pe-4 ps-4">
               <div class="name-col">Done</div>
-              <div id="colCounterDone" class="col-counter">0</div>
+              <div id="counterDone" class="col-counter">0</div>
             </div>
             <div id="doneTodoCardList" class="todo-card-list"></div>
             <div class="d-grid p-3">
@@ -125,6 +51,80 @@
             </div>
           </div>
         </div>
+        <!-- modal screen -->
+        <div class="modal fade" id="modalScreenAddTodo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+          aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Adding a new todo</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form id="modalFormAddNewTodo">
+                  <div class="form-floating mb-3">
+                    <input id="setTodoTitle" type="text" class="form-control" placeholder="Enter the title Todo">
+                    <label for="floatingInput">Enter the title Todo</label>
+                  </div>
+                  <div class="form-floating mb-3">
+                    <textarea id="setTodoDescription" class="form-control" placeholder="Description"
+                      style="height: 100px"></textarea>
+                    <label for="floatingTextarea2">Description</label>
+                  </div>
+                  <div class="modal-body__btn d-flex gap-2">
+                    <select class="form-select" id="setTodoUser">
+                      <option selected disabled>Select User</option>
+                      <option value="Denis">Denis</option>
+                      <option value="Hennry">Hennry</option>
+                    </select>
+                    <button id="btnCloseModalAddTodo" type="button" class="btn btn-secondary"
+                      data-bs-dismiss="modal">Close</button>
+                    <button id="btnConfirmModalAddTodo" type="submit" class="btn btn-primary"
+                      data-bs-dismiss="modal">Confirm</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- edit modal screen -->
+        <div class="modal fade" id="modalScreenEditTodo" data-bs-backdrop="static" data-bs-keyboard="false"
+          tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="modalScreenEditTodoLabel">Edit todo</h1>
+                <button id="btnCloseHead" type="button" class="btn-close" data-bs-dismiss="modal"
+                  aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form id="modalFormEditTodo">
+                  <div class="form-floating mb-3">
+                    <input id="editTodoTitle" type="text" class="form-control" placeholder="Enter the title Todo">
+                    <label for="floatingInput">Enter the title Todo</label>
+                  </div>
+                  <div class="form-floating mb-3">
+                    <textarea id="editTodoDescription" class="form-control" placeholder="Description"
+                      style="height: 100px"></textarea>
+                    <label for="editFloatingTextarea">Description</label>
+                  </div>
+                  <div class="modal-body__btn d-flex gap-2">
+                    <select class="form-select" id="editTodoUser">
+                      <option selected disabled>Select User</option>
+                      <option value="Denis">Denis</option>
+                      <option value="Hennry">Hennry</option>
+                    </select>
+                    <button id="btnCloseModalEditTodo" type="button" class="btn btn-secondary"
+                      data-bs-dismiss="modal">Close</button>
+                    <button id="btnConfirmEdit" type="submit" class="btn btn-primary"
+                      data-bs-dismiss="modal">Confirm</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- modal screen finish -->
       </div>
     </div>
   </div>
