@@ -14,6 +14,12 @@ const setTodoDescriptionElement = $('#setTodoDescription')
 const setTodoUserElement = $('#setTodoUser')
 const btnCloseModalAddTodoElement = $('#btnCloseModalAddTodo')
 const btnConfirmModalAddTodoElement = $('#btnConfirmModalAddTodo')
+// modal edit
+const modalFormEditTodoElement = $('#modalFormEditTodo')
+const editTodoTitleElement = $('#editTodoTitle')
+const editTodoDescriptionElement = $('#editTodoDescription')
+const editTodoUserElement = $('#editTodoUser')
+const btnCloseModalEditElement = $('#btnCloseModalEdit')
 // col list
 const activeTodoCardListElement = $('#activeTodoCardList')
 const inProgressTodoCardListElement = $('#inProgressTodoCardList')
@@ -24,6 +30,7 @@ const counterInProgressElement = $('#counterInProgress')
 const counterDoneElement = $('#counterDone')
 // arr todo
 const todoList = []
+const editTodoList = []
 // class (template todo)
 class Todo {
   id = crypto.randomUUID()
@@ -65,7 +72,7 @@ function buildTodoTemplate(idTodo, createdAtTodo, titleTodo, descriptionTodo, us
   </div>
  `
 }
-// render
+// class render
 class Render {
   templateDefault = ''
   counterDefault = 0
@@ -146,7 +153,7 @@ function handleClickBtnRemoveTargetTodo({ target }) {
 // check select value
 function handleChangeSelectStatus({ target }) {
   const findCard = target.closest('.todo-card')
-  todoList.forEach((item, index) => {
+  todoList.forEach((item) => {
     if (target.tagName == 'SELECT' && findCard.id == item.id) {
       if (target.value == 1) {
         item.valueSelectStatus = item.selectStatus[0]
@@ -162,7 +169,48 @@ function handleChangeSelectStatus({ target }) {
   })
 }
 
+// get data (press btnEdit)
+function handleClickBtnEditTargetTodo({ target }) {
+  const findCard = target.closest('.todo-card')
+  todoList.forEach((item) => {
+    if (target.tagName == 'BUTTON' && target.getAttribute('role') == 'btnEdit' && item.id == findCard.id) {
+      editTodoTitleElement.value = item.title
+      editTodoDescriptionElement.value = item.description
+      editTodoUserElement.value = item.user
+      editTodoList.push(item)
+    }
+  })
+}
+
+// set data(edit modal)
+function handleClickEditModalBtnConfirm() {
+  event.preventDefault()
+  editTodoList.forEach((item) => {
+    let valueItem = item
+    todoList.forEach((item) => {
+      if (valueItem.id == item.id) {
+        item.title = editTodoTitleElement.value
+        item.description = editTodoDescriptionElement.value
+        item.user = editTodoUserElement.value
+        editTodoList.length = 0
+        new Render(todoList)
+      }
+    })
+  })
+  modalFormEditTodoElement.reset()
+}
+
+// press btn close
+function handleBtnCloseModalEditTodo({ target }) {
+  if (target.getAttribute('role') == 'btnCloseModalEdit') {
+    editTodoList.length = 0
+  }
+}
 // handle
+modalFormEditTodoElement.addEventListener('click', handleBtnCloseModalEditTodo)
+modalFormEditTodoElement.addEventListener('submit', handleClickEditModalBtnConfirm)
+btnCloseModalEditElement.addEventListener('click', handleBtnCloseModalEditTodo)
 modalFormAddNewTodoElement.addEventListener('submit', handleClickBtnAddNewTodoElement)
 rowElement.addEventListener('click', handleClickBtnRemoveTargetTodo)
 rowElement.addEventListener('change', handleChangeSelectStatus)
+rowElement.addEventListener('click', handleClickBtnEditTargetTodo)
