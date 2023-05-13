@@ -32,7 +32,7 @@ class Todo {
   titleDefault = 'Title new Todo'
   descriptionDefault = 'My first Todo'
   userDefault = 'Anonymous'
-  constructor(title, description, user, valueSelectStatus = this.selectStatus[2]) {
+  constructor(title, description, user, valueSelectStatus = this.selectStatus[0]) {
     this.title = title || this.titleDefault,
       this.description = description || this.descriptionDefault,
       this.user = user == 'Select User' ? this.userDefault : user,
@@ -51,7 +51,7 @@ function buildTodoTemplate(idTodo, createdAtTodo, titleTodo, descriptionTodo, us
     <div class="todo-card__user">User: ${userTodo}</div>
     <div class="todo-card__wrapper d-flex">
       <div class="input-group">
-        <select class="form-select select-status">
+        <select id="123" class="form-select select-status">
           <option selected disabled>Select status</option>
           <option value="1">Todo</option>
           <option value="2">In progress</option>
@@ -65,52 +65,71 @@ function buildTodoTemplate(idTodo, createdAtTodo, titleTodo, descriptionTodo, us
   </div>
  `
 }
-
 // render
-function render(collection = []) {
-  let templates = ''
-  let valueCounterTodo = 0
-  let valueCounterInProgress = 0
-  let valueCounterDone = 0
-
-  if (collection.length == 0) {
-    activeTodoCardListElement.innerHTML = templates
-    counterActiveTodoElement.innerHTML = valueCounterTodo
-    inProgressTodoCardListElement.innerHTML = templates
-    counterInProgressElement.innerHTML = valueCounterInProgress
-    doneTodoCardListElement.innerHTML = templates
-    counterDoneElement.innerHTML = valueCounterDone
-  } else {
-    collection.forEach((item) => {
+class Render {
+  templateDefault = ''
+  counterDefault = 0
+  constructor(collection) {
+    this.templatesActive = ''
+    this.templatesInprogress = ''
+    this.templateDone = ''
+    this.collection = collection
+    this.activeTodo = []
+    this.inProgressTodo = []
+    this.doneTodo = []
+    this.checkStatus()
+    this.renderActiveTodo()
+    this.renderInProgress()
+    this.renderDone()
+  }
+  checkStatus() {
+    this.collection.forEach((item) => {
       if (item.valueSelectStatus == item.selectStatus[0]) {
-        const template = buildTodoTemplate(item.id, item.createdAt, item.title, item.description, item.user, item.valueSelectStatus)
-        templates = templates + template
-        valueCounterTodo++
-        activeTodoCardListElement.innerHTML = templates
-        counterActiveTodoElement.innerHTML = valueCounterTodo
+        this.activeTodo.push(item)
       } else if (item.valueSelectStatus == item.selectStatus[1]) {
-        const template = buildTodoTemplate(item.id, item.createdAt, item.title, item.description, item.user, item.valueSelectStatus)
-        templates = templates + template
-        valueCounterInProgress++
-        inProgressTodoCardListElement.innerHTML = templates
-        counterInProgressElement.innerHTML = valueCounterInProgress
+        this.inProgressTodo.push(item)
       } else if (item.valueSelectStatus == item.selectStatus[2]) {
-        const template = buildTodoTemplate(item.id, item.createdAt, item.title, item.description, item.user, item.valueSelectStatus)
-        templates = templates + template
-        valueCounterDone++
-        doneTodoCardListElement.innerHTML = templates
-        counterDoneElement.innerHTML = valueCounterDone
+        this.doneTodo.push(item)
       }
     })
   }
-
+  renderActiveTodo() {
+    activeTodoCardListElement.innerHTML = this.templateDefault
+    counterActiveTodoElement.innerHTML = this.counterDefault
+    this.activeTodo.forEach((item) => {
+      const template = buildTodoTemplate(item.id, item.createdAt, item.title, item.description, item.user, item.valueSelectStatus)
+      this.templatesActive = this.templatesActive + template
+      activeTodoCardListElement.innerHTML = this.templatesActive
+      counterActiveTodoElement.innerHTML = this.activeTodo.length
+    })
+  }
+  renderInProgress() {
+    inProgressTodoCardListElement.innerHTML = this.templateDefault
+    counterInProgressElement.innerHTML = this.counterDefault
+    this.inProgressTodo.forEach((item) => {
+      const template = buildTodoTemplate(item.id, item.createdAt, item.title, item.description, item.user, item.valueSelectStatus)
+      this.templatesInprogress = this.templatesInprogress + template
+      inProgressTodoCardListElement.innerHTML = this.templatesInprogress
+      counterInProgressElement.innerHTML = this.inProgressTodo.length
+    })
+  }
+  renderDone() {
+    doneTodoCardListElement.innerHTML = this.templateDefault
+    counterDoneElement.innerHTML = this.counterDefault
+    this.doneTodo.forEach((item) => {
+      const template = buildTodoTemplate(item.id, item.createdAt, item.title, item.description, item.user, item.valueSelectStatus)
+      this.templateDone = this.templateDone + template
+      doneTodoCardListElement.innerHTML = this.templateDone
+      counterDoneElement.innerHTML = this.doneTodo.length
+    })
+  }
 }
-
 //add new todo
 function handleClickBtnAddNewTodoElement(event) {
   event.preventDefault()
   todoList.push(new Todo(setTodoTitleElement.value, setTodoDescriptionElement.value, setTodoUserElement.value))
-  render(todoList)
+  // render(todoList)
+  new Render(todoList)
   modalFormAddNewTodoElement.reset()
 }
 // remove target todo
@@ -119,10 +138,31 @@ function handleClickBtnRemoveTargetTodo({ target }) {
   todoList.forEach((item, index) => {
     if (target.tagName == 'BUTTON' && target.getAttribute('role') == 'btnRemove' && item.id == findCard.id) {
       todoList.splice(index, 1)
-      render(todoList)
+      new Render(todoList)
     }
   })
 }
+
+// check select value
+function handleChangeSelectStatus({ target }) {
+  const findCard = target.closest('.todo-card')
+  todoList.forEach((item, index) => {
+    if (target.tagName == 'SELECT' && findCard.id == item.id) {
+      if (target.value == 1) {
+        item.valueSelectStatus = item.selectStatus[0]
+        new Render(todoList)
+      } else if (target.value == 2) {
+        item.valueSelectStatus = item.selectStatus[1]
+        new Render(todoList)
+      } else if (target.value == 3) {
+        item.valueSelectStatus = item.selectStatus[2]
+        new Render(todoList)
+      }
+    }
+  })
+}
+
 // handle
 modalFormAddNewTodoElement.addEventListener('submit', handleClickBtnAddNewTodoElement)
 rowElement.addEventListener('click', handleClickBtnRemoveTargetTodo)
+rowElement.addEventListener('change', handleChangeSelectStatus)
