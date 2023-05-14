@@ -76,10 +76,10 @@ function buildTodoTemplate(idTodo, createdAtTodo, titleTodo, descriptionTodo, us
 class Render {
   templateDefault = ''
   counterDefault = 0
+  templatesActive = ''
+  templatesInprogress = ''
+  templateDone = ''
   constructor(collection) {
-    this.templatesActive = ''
-    this.templatesInprogress = ''
-    this.templateDone = ''
     this.collection = collection
     this.activeTodo = []
     this.inProgressTodo = []
@@ -213,13 +213,16 @@ function handleBtnCloseModalEditTodo({ target }) {
 
 // remove all
 function handleClickBtnDelAllTodoElement() {
-  for (let i = 0; counterDoneElement.textContent >= i; i++) {
-    todoList.forEach((item, index) => {
-      if (item.valueSelectStatus == item.selectStatus[2]) {
-        todoList.splice(index, 1)
-      }
-    })
-    new Render(todoList)
+  let message = confirm('Warning! Are you sure you want to delete all Todos?')
+  if (message) {
+    for (let i = 0; counterDoneElement.textContent >= i; i++) {
+      todoList.forEach((item, index) => {
+        if (item.valueSelectStatus == item.selectStatus[2]) {
+          todoList.splice(index, 1)
+        }
+      })
+      new Render(todoList)
+    }
   }
 }
 // handle
