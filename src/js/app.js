@@ -159,8 +159,12 @@ function handleChangeSelectStatus({ target }) {
         item.valueSelectStatus = item.selectStatus[0]
         new Render(todoList)
       } else if (target.value == 2) {
-        item.valueSelectStatus = item.selectStatus[1]
-        new Render(todoList)
+        if (counterInProgressElement.textContent == 6) {
+          alert('You`ve reached your limit of 6 tasks in progress. Please complete some of these before adding any new ones')
+        } else {
+          item.valueSelectStatus = item.selectStatus[1]
+          new Render(todoList)
+        }
       } else if (target.value == 3) {
         item.valueSelectStatus = item.selectStatus[2]
         new Render(todoList)
@@ -206,7 +210,20 @@ function handleBtnCloseModalEditTodo({ target }) {
     editTodoList.length = 0
   }
 }
+
+// remove all
+function handleClickBtnDelAllTodoElement() {
+  for (let i = 0; counterDoneElement.textContent >= i; i++) {
+    todoList.forEach((item, index) => {
+      if (item.valueSelectStatus == item.selectStatus[2]) {
+        todoList.splice(index, 1)
+      }
+    })
+    new Render(todoList)
+  }
+}
 // handle
+btnDelAllTodoElement.addEventListener('click', handleClickBtnDelAllTodoElement)
 modalFormEditTodoElement.addEventListener('click', handleBtnCloseModalEditTodo)
 modalFormEditTodoElement.addEventListener('submit', handleClickEditModalBtnConfirm)
 btnCloseModalEditElement.addEventListener('click', handleBtnCloseModalEditTodo)
