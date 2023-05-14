@@ -131,11 +131,36 @@ class Render {
     })
   }
 }
+// local storage
+// setData
+function setData(value) {
+  // JSON
+  let valueJson = JSON.stringify(value)
+  localStorage.setItem('todos', valueJson)
+  return valueJson
+}
+// getData
+function getData() {
+  let valueJson = localStorage.getItem('todos')
+  // JsonInObj
+  let valueInObj = JSON.parse(valueJson)
+  return valueInObj
+}
+//check local storge
+if (todoList.length == 0 && getData('todos') !== null) {
+  const dataLocalStorage = getData()
+  dataLocalStorage.forEach((item) => {
+    todoList.push(item)
+    setData(todoList)
+    new Render(todoList)
+  })
+}
 //add new todo
 function handleClickBtnAddNewTodoElement(event) {
   event.preventDefault()
   todoList.push(new Todo(setTodoTitleElement.value, setTodoDescriptionElement.value, setTodoUserElement.value))
   // render(todoList)
+  setData(todoList)
   new Render(todoList)
   modalFormAddNewTodoElement.reset()
 }
@@ -145,6 +170,7 @@ function handleClickBtnRemoveTargetTodo({ target }) {
   todoList.forEach((item, index) => {
     if (target.tagName == 'BUTTON' && target.getAttribute('role') == 'btnRemove' && item.id == findCard.id) {
       todoList.splice(index, 1)
+      setData(todoList)
       new Render(todoList)
     }
   })
@@ -157,16 +183,19 @@ function handleChangeSelectStatus({ target }) {
     if (target.tagName == 'SELECT' && findCard.id == item.id) {
       if (target.value == 1) {
         item.valueSelectStatus = item.selectStatus[0]
+        setData(todoList)
         new Render(todoList)
       } else if (target.value == 2) {
         if (counterInProgressElement.textContent == 6) {
           alert('You`ve reached your limit of 6 tasks in progress. Please complete some of these before adding any new ones')
         } else {
           item.valueSelectStatus = item.selectStatus[1]
+          setData(todoList)
           new Render(todoList)
         }
       } else if (target.value == 3) {
         item.valueSelectStatus = item.selectStatus[2]
+        setData(todoList)
         new Render(todoList)
       }
     }
@@ -197,6 +226,7 @@ function handleClickEditModalBtnConfirm() {
         item.description = editTodoDescriptionElement.value
         item.user = editTodoUserElement.value
         editTodoList.length = 0
+        setData(todoList)
         new Render(todoList)
       }
     })
@@ -221,6 +251,7 @@ function handleClickBtnDelAllTodoElement() {
           todoList.splice(index, 1)
         }
       })
+      setData(todoList)
       new Render(todoList)
     }
   }
