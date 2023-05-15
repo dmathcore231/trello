@@ -56,7 +56,7 @@ class Todo {
 //  build Todo Template
 function buildTodoTemplate(idTodo, createdAtTodo, titleTodo, descriptionTodo, userTodo, valueSelectStatus) {
   return `
-    <div id="${idTodo}" class="todo-card m-3 p-2 border border-success border-2 rounded-4 d-flex flex-column gap-2">
+    <div id="${idTodo}" class="todo-card m-3 p-2 border border-primary border-2 rounded-4 d-flex flex-column gap-2">
     <div class="todo-card__wrapper d-flex justify-content-between">
       <div class="todo-card__title">Title: ${titleTodo}</div>
       <div class="todo-card__date"> ${createdAtTodo}</div>
