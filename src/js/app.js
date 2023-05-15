@@ -12,8 +12,6 @@ const modalFormAddNewTodoElement = $('#modalFormAddNewTodo')
 const setTodoTitleElement = $('#setTodoTitle')
 const setTodoDescriptionElement = $('#setTodoDescription')
 const setTodoUserElement = $('#setTodoUser')
-const btnCloseModalAddTodoElement = $('#btnCloseModalAddTodo')
-const btnConfirmModalAddTodoElement = $('#btnConfirmModalAddTodo')
 // modal edit
 const modalFormEditTodoElement = $('#modalFormEditTodo')
 const editTodoTitleElement = $('#editTodoTitle')
@@ -146,7 +144,7 @@ function getData() {
   let valueInObj = JSON.parse(valueJson)
   return valueInObj
 }
-//check local storge
+//check local storage
 if (todoList.length == 0 && getData('todos') !== null) {
   const dataLocalStorage = getData()
   dataLocalStorage.forEach((item) => {
@@ -256,6 +254,24 @@ function handleClickBtnDelAllTodoElement() {
     }
   }
 }
+
+// request bd users
+async function getUsers() {
+  try {
+    const idLink = await fetch('https://jsonplaceholder.typicode.com/users')
+    const users = await idLink.json()
+    users.forEach((item) => {
+      const template = `
+      <option value="${item.name}">${item.name}</option>
+      `
+      setTodoUserElement.innerHTML += template
+      editTodoUserElement.innerHTML += template
+    })
+  } catch (error) {
+    console.log('Error!')
+  }
+}
+getUsers()
 // handle
 btnDelAllTodoElement.addEventListener('click', handleClickBtnDelAllTodoElement)
 modalFormEditTodoElement.addEventListener('click', handleBtnCloseModalEditTodo)
