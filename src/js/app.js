@@ -7,7 +7,7 @@ function $(selector) {
 const btnAddTodoElement = $('#btnAddTodo')
 const btnDelAllTodoElement = $('#btnDelAllTodo')
 const rowElement = $('.row')
-const navBarWatch = $('.nav-bar__watch')
+const navBarclock = $('.nav-bar__clock')
 // modal add new todo
 const modalFormAddNewTodoElement = $('#modalFormAddNewTodo')
 const setTodoTitleElement = $('#setTodoTitle')
@@ -30,14 +30,14 @@ const counterDoneElement = $('#counterDone')
 // arr todo
 const todoList = []
 const editTodoList = []
-// watch
-function watch() {
+// clock
+function clock() {
   setInterval(function () {
     const now = new Date();
-    navBarWatch.innerHTML = now.toLocaleTimeString();
+    navBarclock.innerHTML = now.toLocaleTimeString();
   }, 1000);
 }
-watch()
+clock()
 // class (template todo)
 class Todo {
   id = crypto.randomUUID()
