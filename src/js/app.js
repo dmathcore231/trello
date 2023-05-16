@@ -104,6 +104,7 @@ if (todoList.length == 0 && getData('todos') !== null) {
   })
 }
 
+// handle
 //add new todo
 function handleClickBtnAddNewTodoElement(event) {
   event.preventDefault()
@@ -225,7 +226,7 @@ async function getUsers() {
 }
 getUsers()
 
-// handle
+// listeners
 btnDelAllTodoElement.addEventListener('click', handleClickBtnDelAllTodoElement)
 modalFormEditTodoElement.addEventListener('click', handleBtnCloseModalEditTodo)
 modalFormEditTodoElement.addEventListener('submit', handleClickEditModalBtnConfirm)
